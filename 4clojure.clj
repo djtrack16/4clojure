@@ -1,4 +1,4 @@
-;; SOME SOLUTIONS TO 4CLOJURE.COM PROBLEMS (that I consider nontrivial)
+;; SELECTED SOLUTIONS TO 4CLOJURE.COM PROBLEMS
 
 ;; Format:
 ;; Problem Description
