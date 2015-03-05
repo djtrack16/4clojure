@@ -1,37 +1,12 @@
-;; SELECTED SOLUTIONS TO 4CLOJURE.COM PROBLEMS
+;; MOST SOLUTIONS TO 4CLOJURE.COM PROBLEMS
 
-;; Format:
-;; Problem Description
-;; Problem (if necessary)
-;; Solution
-;; (you can see multiple tries)
-
-;; ideas for contributions:
 *;; get all permutations of a list/string (allow for duplicates to make it more interesting)
-;; given a rank, find lexicographic permutation of it
-;; given permutation, find its lexicographic rank
-;; tell if a bt is balanced using this defintion (max depth and min depth <= 1)
-*;; get prime factorization of a number
 *;; check if preorder and postorder traversal are valid4cl
 *;; given inorder and preorder build a BST
-;; count the number of structurally distinct binary trees that can be formed with N nodes
-*;; print all possible combinations of balanced parentheses of length 2n
 *;; is valid bst?
-;; count trailing zeroes in n!
-*;; count number of 1s in binary representation from 1 to n
-;; 	# write a function that gives you all possible ways to map a telephone number
-;; 	# Given a string of characters with no spaces and a dictionary of valid English words
-;;	# find the individual words in the sentence
-;;	# if you want to print ALL POSSIBLE VALID WORD COMBOS, just take out return true or false
-;;	# and just print solutions when rest is 0, because boolean return value just returns the FIRST MATCH
-;;	# whereas this way exhaustively searches for all solutions using backtracking.
 ;; transitive dependencies (from codekata.com site, did this q in python)
 ;; change infix expr to postfix expr
 ;; evaluate postfix expr using stack
-;; If arity of operators is fixed, then which of the following notations can be used to parse expressions
-;; without parentheses? a) Infix Notation (Inorder traversal of a expression tree) b) Postfix Notation
-;; (Postorder traversal of a expression tree) c) Prefix Notation (Preorder traversal of a expression tree)
-
 
 ;;15. Write a function that doubles a number
 #(* % 2)
@@ -526,11 +501,11 @@ filter odd?
 ;; we also compute all rows (because we may need them for another problem)
 #(letfn
 	[(f [n] (reduce
-										*
-										(range 1 (inc n))))
+						*
+						(range 1 (inc n))))
 	 (nCr [n r] (quot
-	 												(f n)
-	 												(* (f r) (f (- n r)))))]
+	 							(f n)
+	 							(* (f r) (f (- n r)))))]
 		(for [r (range %)]
 			(nCr (dec %) r)))
 
@@ -566,6 +541,18 @@ filter odd?
 
 ;; 101. Levenshtein Distance
 (fn )
+
+;; 102. When working with java, you often need to create an object with fieldsLikeThis,
+;; but you'd rather work with a hashmap that has :keys-like-this until it's time to
+;; convert. Write a function which takes lower-case hyphen-separated strings and converts
+;; them to camel-case strings.
+#(let [parts (clojure.string/split % #"-")]
+	(->>
+		(rest parts)
+		(map clojure.string/capitalize)
+		(cons (first parts))
+		(clojure.string/join)))
+
 
 ;;103. Given a sequence S consisting of n elements generate all k-combinations of S,
 ;; i. e. generate all possible sets consisting of k distinct elements taken from S.
@@ -801,6 +788,24 @@ filter odd?
 				(vec digits)
 				(recur (quot n b) (concat [(mod n b)] digits))))))
 
+;; 140 In trick-taking card games such as bridge, spades, or hearts, cards are played in groups known
+;; as "tricks" - each player plays a single card, in order; the first player is said to "lead" to the
+;; trick. After all players have played, one card is said to have "won" the trick. How the winner is
+;; determined will vary by game, but generally the winner is the highest card played in the suit that
+;; was led. Sometimes (again varying by game), a particular suit will be designated "trump", meaning
+;; that its cards are more powerful than any others: if there is a trump suit, and any trumps are played,
+;; then the highest trump wins regardless of what was led.
+;; Your goal is to devise a function that can determine which of a number of cards has won a trick. You
+;; should accept a trump suit, and return a function winner. Winner will be called on a sequence of cards,
+;; and should return the one which wins the trick. Cards will be represented in the format returned by
+;; Problem 128, Recognize Playing Cards: a hash-map of :suit and a numeric :rank. Cards with a larger rank
+;; are stronger.
+(fn [suit]
+	(fn [cards]
+		(let [trump #(filter (fn [c] (= % (c :suit)) cards))]
+		(if suit
+			(->> suit trump )
+			))))
 ;; 143 dot product
 (fn [x y]
 	(apply
