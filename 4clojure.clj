@@ -634,7 +634,7 @@ filter odd?
 ;; Analyze the elements of the input collection and return a sequence which maintains the nested
 ;; structure, and which includes all elements starting from the head whose sum is less than or
 ;; equal to the input integer.
-(fn )
+
 
 ;;114. take-while is great for filtering sequences, but it limited: you can only
 ;; examine a single item of the sequence at a time. What if you need to keep track
