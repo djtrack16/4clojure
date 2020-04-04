@@ -38,7 +38,7 @@ butlast
 #(reduce conj () %)
 
 ;;24 find the sum of a sequence of numbers
-#(reduce + %)
+#(reduce + %) 
 
 ;;25 return only odd numbers from sequence
 filter odd?
