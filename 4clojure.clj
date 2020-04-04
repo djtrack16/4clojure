@@ -167,7 +167,9 @@ filter odd?
 ;; re-write "comp"
 (fn [& funcs]
 	(reduce
-		(fn [f g] (fn [args] (f (apply g args))))
+		(fn [f g]
+			(fn [args]
+				(f (apply g args))))
 		funcs))
 
 ;;59 Take a set of functions and return a new function that takes a variable number of
@@ -235,8 +237,8 @@ filter odd?
  (let [b (empty s)]
   (cond
   	(= b {})  :map
-    (= b #{}) :set
-    (= b '()) (if (reversible? s) :vector :list))))
+	(= b #{}) :set
+	(= b '()) (if (reversible? s) :vector :list))))
  
 
 ;; 66 find the greatest common divisor of two numbers
@@ -263,10 +265,10 @@ filter odd?
 ;;68 grok loop and recur concepts
 (= __
   (loop [x 5
-         result []]
-    (if (> x 0)
-      (recur (dec x) (conj result (+ 2 x)))
-      result)))
+		 result []]
+	(if (> x 0)
+	  (recur (dec x) (conj result (+ 2 x)))
+	  result)))
 ;; answer [7 6 5 4 3]
 
 ;;69 Write a function which takes a function f and a variable number of maps.
@@ -344,11 +346,11 @@ filter odd?
 ;; trampoline returns that non-function value. This is useful for implementing mutually recursive
 ;; algorithms in a way that won't consume the stack.
 (= 11 (letfn
-     [(foo [x y] #(bar (conj x y) y))
-      (bar [x y] (if (> (last x) 10)
-                   x
-                   #(foo x (+ 2 y))))]
-     (trampoline foo [] 1)))
+	 [(foo [x y] #(bar (conj x y) y))
+	  (bar [x y] (if (> (last x) 10)
+				   x
+				   #(foo x (+ 2 y))))]
+	 (trampoline foo [] 1)))
 
 ;77 Write a function which finds all the anagrams in a vector of words. A word x is an anagram of
 ;; word y if all the letters in x can be rearranged in a different order to form y. Your function
@@ -407,7 +409,7 @@ filter odd?
   (#(if (= % s) s (transitive %))
   	(set
   		(for [[w x] s [y z] s]
-          [w (if (= x y) z x)]))))
+		  [w (if (= x y) z x)]))))
 
 
 
@@ -453,7 +455,20 @@ filter odd?
 ;; You can start at any node.
 ;; You must visit each edge exactly once.
 ;; All edges are undirected.
-
+(fn _ [graph]
+ (if (= 1 (count graph))
+  true
+ (reduce
+  #(%1 %2)
+  (for [[a b] graph [c d] graph]
+   (if
+	(and
+	 (not= a b)
+	 (not= c d)
+	 (#{c d} b)
+	 (not= [a b] [c d]))
+	(_ (remove {[a b]} graph))
+	false)))))
 
 ;;90 cartesian product
 (fn [a b]
@@ -494,7 +509,7 @@ filter odd?
 #(= %
 		((fn mirror? [[self l r]]
 			(if self
-        '(self (mirror? r) (mirror? l))))
+		'(self (mirror? r) (mirror? l))))
 		%))
 
 ;; 97 compute the nth row of pascal's triangle
@@ -547,11 +562,11 @@ filter odd?
 ;; convert. Write a function which takes lower-case hyphen-separated strings and converts
 ;; them to camel-case strings.
 #(let [parts (clojure.string/split % #"-")]
-	(->>
-		(rest parts)
-		(map clojure.string/capitalize)
-		(cons (first parts))
-		(clojure.string/join)))
+(->>
+	(rest parts)
+	(map clojure.string/capitalize)
+	(cons (first parts))
+	(clojure.string/join)))
 
 
 ;;103. Given a sequence S consisting of n elements generate all k-combinations of S,
@@ -763,7 +778,7 @@ filter odd?
 (fn [f value coll]
   (mapcat
    (fn [[a b]]
-     (cons a (when (and a b (f a b)) [value])))
+	 (cons a (when (and a b (f a b)) [value])))
    (partition-all 2 1 coll)))
 
 ;; 134 given a key and map, return true iff map contains key and corresponding value is nil.
@@ -788,7 +803,7 @@ filter odd?
 				(vec digits)
 				(recur (quot n b) (concat [(mod n b)] digits))))))
 
-;; 140 In trick-taking card games such as bridge, spades, or hearts, cards are played in groups known
+;; 141. In trick-taking card games such as bridge, spades, or hearts, cards are played in groups known
 ;; as "tricks" - each player plays a single card, in order; the first player is said to "lead" to the
 ;; trick. After all players have played, one card is said to have "won" the trick. How the winner is
 ;; determined will vary by game, but generally the winner is the highest card played in the suit that
@@ -825,9 +840,9 @@ filter odd?
 
 ;; 145. the for macro
 (= __ (for [x (iterate #(+ 4 %) 0)
-            :let [z (inc x)]
-            :while (< z 40)]
-        z))
+			:let [z (inc x)]
+			:while (< z 40)]
+		z))
 
 __ = (range 1 40 4)
 
@@ -900,16 +915,16 @@ __ = (range 1 40 4)
 ;; all integers between start and end (inclusive) are contained in the input sequence.
 (fn [xs]
   (let [[x & xs] (sort v)]
-    (if x
-      (reverse
-       (reduce
-        (fn [[[a b] & r :as intervals] nxt]
-          (if (<= a nxt (+ 1 b))
-            (conj r [a nxt])
-            (conj intervals [nxt nxt])))
-        [[x x]]
-        xs))
-      v)))
+	(if x
+	  (reverse
+	   (reduce
+		(fn [[[a b] & r :as intervals] nxt]
+		  (if (<= a nxt (+ 1 b))
+			(conj r [a nxt])
+			(conj intervals [nxt nxt])))
+		[[x x]]
+		xs))
+	  v)))
 
 
 ;;173
@@ -921,7 +936,7 @@ __ = (range 1 40 4)
 f x
 
 
-           
+		   
 ;;177 When parsing a snippet of code it's often a good idea to do a sanity check to see
 ;; if all the brackets match up. Write a function that takes in a string and returns truthy
 ;; if all square [ ] round ( ) and curly { } brackets are properly paired and legally nested,
